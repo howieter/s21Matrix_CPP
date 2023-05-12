@@ -6,25 +6,25 @@
 
 using namespace std;
 namespace S21 {
-class S21Matrix {
+class Matrix {
  private:
   int rows_, cols_;
   double **matrix_;
 
  protected:
-  bool SizeCompare(const S21Matrix &) const;
+  bool SizeCompare(const Matrix &) const;
   void InitializeMatrix();
   void DeleteMatrix();
-  void PlusMinus(const S21Matrix &, const int &);
-  void CutMatrix(S21Matrix &, const int &, const int &, S21Matrix &);
-  void CopyMatrix(const S21Matrix &);
+  void PlusMinus(const Matrix &, const int &);
+  void CutMatrix(Matrix &, const int &, const int &, Matrix &);
+  void CopyMatrix(const Matrix &);
 
  public:
-  S21Matrix() noexcept;
-  S21Matrix(const int &, const int &);
-  S21Matrix(const S21Matrix &) noexcept;
-  S21Matrix(S21Matrix &&) noexcept;
-  ~S21Matrix();
+  Matrix() noexcept;
+  Matrix(const int &, const int &);
+  Matrix(const Matrix &) noexcept;
+  Matrix(Matrix &&) noexcept;
+  ~Matrix();
 
   int GetRows() const;
   int GetCols() const;
@@ -34,31 +34,31 @@ class S21Matrix {
   void SetCols(const int &);
   void SetMatrix(double **, const int &, const int &);
 
-  S21Matrix operator+(const S21Matrix &) const;
-  S21Matrix operator-(const S21Matrix &) const;
-  S21Matrix operator*(const S21Matrix &) const;
-  friend S21Matrix operator*(const S21Matrix &, const double &);
-  friend S21Matrix operator*(const double &, const S21Matrix &);
-  S21Matrix &operator+=(const S21Matrix &);
-  S21Matrix &operator-=(const S21Matrix &);
-  S21Matrix &operator*=(const S21Matrix &);
-  S21Matrix &operator*=(const double &);
-  S21Matrix &operator=(const S21Matrix &);
-  bool operator==(const S21Matrix &) const;
+  Matrix operator+(const Matrix &) const;
+  Matrix operator-(const Matrix &) const;
+  Matrix operator*(const Matrix &) const;
+  friend Matrix operator*(const Matrix &, const double &);
+  friend Matrix operator*(const double &, const Matrix &);
+  Matrix &operator+=(const Matrix &);
+  Matrix &operator-=(const Matrix &);
+  Matrix &operator*=(const Matrix &);
+  Matrix &operator*=(const double &);
+  Matrix &operator=(const Matrix &);
+  bool operator==(const Matrix &) const;
   double &operator()(const int &, const int &) const;
 
-  bool EqMatrix(const S21Matrix &) const;
-  void SumMatrix(const S21Matrix &);
-  void SubMatrix(const S21Matrix &);
+  bool EqMatrix(const Matrix &) const;
+  void SumMatrix(const Matrix &);
+  void SubMatrix(const Matrix &);
   void MulNumber(const double &);
-  void MulMatrix(const S21Matrix &);
-  S21Matrix Transpose();
+  void MulMatrix(const Matrix &);
+  Matrix Transpose();
   double Determinant();
-  S21Matrix CalcComplements();
-  S21Matrix InverseMatrix();
+  Matrix CalcComplements();
+  Matrix InverseMatrix();
 };
-S21Matrix operator*(const S21Matrix &, const double &);
-S21Matrix operator*(const double &, const S21Matrix &);
+Matrix operator*(const Matrix &, const double &);
+Matrix operator*(const double &, const Matrix &);
 }  // namespace S21
 
 #endif  //  S21_MATRIX_OOP_H_

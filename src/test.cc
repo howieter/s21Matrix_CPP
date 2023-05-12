@@ -41,7 +41,7 @@ void deleteMatrix(double ***matrix, const int &rows) {
   }
 }
 
-void genS21Matrix(S21::S21Matrix &matrix) {
+void genMatrix(S21::Matrix &matrix) {
   srand(time(nullptr) + rand());
   const int rows = rand() % 10 + 1;
   const int cols = rand() % 10 + 1;
@@ -51,7 +51,7 @@ void genS21Matrix(S21::S21Matrix &matrix) {
   deleteMatrix(&newMatrix, rows);
 }
 
-void fillS21Matrix(S21::S21Matrix &matrix) {
+void fillMatrix(S21::Matrix &matrix) {
   srand(time(nullptr) + rand());
   for (int i = 0; i < matrix.GetRows(); ++i) {
     for (int k = 0; k < matrix.GetCols(); ++k) {
@@ -61,19 +61,18 @@ void fillS21Matrix(S21::S21Matrix &matrix) {
 }
 }  // namespace TestCase
 
-namespace S21 {
 TEST(Getters, Rows) {
-  S21Matrix matrix(3, 4);
+  S21::Matrix matrix(3, 4);
   ASSERT_TRUE(matrix.GetRows() == 3);
 }
 
 TEST(Getters, Cols) {
-  S21Matrix matrix(3, 4);
+  S21::Matrix matrix(3, 4);
   ASSERT_TRUE(matrix.GetCols() == 4);
 }
 
 TEST(Getters, Matrix) {
-  S21Matrix matrix(3, 4);
+  S21::Matrix matrix(3, 4);
   double **otherMatrix = matrix.GetMatrix();
   ASSERT_TRUE(matrix.GetMatrix() == otherMatrix);
 }
@@ -82,7 +81,7 @@ TEST(Setters, RowsIncrease) {
   srand(time(nullptr) + rand());
   const int rows = rand() % 10 + 1;
   const int cols = rand() % 10 + 1;
-  S21Matrix matrix(rows, cols);
+  S21::Matrix matrix(rows, cols);
   const int newRows = rows + 5;
   matrix.SetRows(newRows);
   ASSERT_TRUE(matrix.GetRows() == newRows &&
@@ -90,7 +89,7 @@ TEST(Setters, RowsIncrease) {
 }
 
 TEST(Setters, RowsDecrease) {
-  S21Matrix matrix(3, 4);
+  S21::Matrix matrix(3, 4);
   matrix.SetRows(1);
   ASSERT_TRUE(matrix.GetRows() == 1);
 }
@@ -99,7 +98,7 @@ TEST(Setters, ColsIncrease) {
   srand(time(nullptr) + rand());
   const int rows = rand() % 10 + 1;
   const int cols = rand() % 10 + 1;
-  S21Matrix matrix(rows, cols);
+  S21::Matrix matrix(rows, cols);
   const int newCols = cols + 5;
   matrix.SetCols(newCols);
   ASSERT_TRUE(matrix.GetCols() == newCols &&
@@ -107,7 +106,7 @@ TEST(Setters, ColsIncrease) {
 }
 
 TEST(Setters, ColsDecrease) {
-  S21Matrix matrix(3, 4);
+  S21::Matrix matrix(3, 4);
   matrix.SetCols(1);
   ASSERT_TRUE(matrix.GetCols() == 1);
 }
@@ -116,7 +115,7 @@ TEST(Setters, SetMatrix) {
   srand(time(nullptr));
   const int rows = rand() % 10 + 1;
   const int cols = rand() % 10 + 1;
-  S21Matrix matrix;
+  S21::Matrix matrix;
   double **newMatrix = nullptr;
   TestCase::genMatrix(&newMatrix, rows, cols);
   matrix.SetMatrix(newMatrix, rows, cols);
@@ -126,45 +125,45 @@ TEST(Setters, SetMatrix) {
 }
 
 TEST(Constructors, Default) {
-  S21Matrix matrix;
+  S21::Matrix matrix;
   ASSERT_TRUE(matrix.GetRows() == 0 && matrix.GetCols() == 0 &&
               !matrix.GetMatrix());
 }
 
 TEST(Constructors, Parametres) {
-  S21Matrix matrix(3, 4);
+  S21::Matrix matrix(3, 4);
   ASSERT_TRUE(matrix.GetRows() == 3 && matrix.GetCols() == 4 &&
               matrix(0, 0) == 0);
 }
 
 TEST(Constructors, Copy) {
-  S21Matrix matrix1;
-  TestCase::genS21Matrix(matrix1);
-  S21Matrix matrix2(matrix1);
+  S21::Matrix matrix1;
+  TestCase::genMatrix(matrix1);
+  S21::Matrix matrix2(matrix1);
   ASSERT_TRUE(matrix1 == matrix2);
 }
 
 TEST(Constructors, Move) {
-  S21Matrix matrix1;
-  TestCase::genS21Matrix(matrix1);
-  S21Matrix matrix1copy(matrix1);
-  S21Matrix matrix2 = (S21Matrix &&) matrix1;
-  S21Matrix matrix0;
+  S21::Matrix matrix1;
+  TestCase::genMatrix(matrix1);
+  S21::Matrix matrix1copy(matrix1);
+  S21::Matrix matrix2 = (S21::Matrix &&) matrix1;
+  S21::Matrix matrix0;
   ASSERT_TRUE(matrix1 == matrix0 && matrix2 == matrix1copy);
 }
 
 TEST(Functions, EqMatrixTrue) {
-  S21Matrix matrix1;
-  TestCase::genS21Matrix(matrix1);
-  S21Matrix matrix2(matrix1);
+  S21::Matrix matrix1;
+  TestCase::genMatrix(matrix1);
+  S21::Matrix matrix2(matrix1);
   ASSERT_TRUE(matrix1.EqMatrix(matrix2));
 }
 
 TEST(Functions, EqMatrixFalse) {
-  S21Matrix matrix1;
-  S21Matrix matrix2;
-  TestCase::genS21Matrix(matrix1);
-  TestCase::genS21Matrix(matrix2);
+  S21::Matrix matrix1;
+  S21::Matrix matrix2;
+  TestCase::genMatrix(matrix1);
+  TestCase::genMatrix(matrix2);
   ASSERT_FALSE(matrix1.EqMatrix(matrix2));
 }
 
@@ -174,10 +173,10 @@ TEST(Functions, SumMatrix) {
   const int cols = rand() % 10 + 1;
   double **newMatrix = nullptr;
   TestCase::genMatrix(&newMatrix, rows, cols);
-  S21Matrix matrix2;
+  S21::Matrix matrix2;
   matrix2.SetMatrix(newMatrix, rows, cols);
   TestCase::deleteMatrix(&newMatrix, rows);
-  S21Matrix matrix1(rows, cols);
+  S21::Matrix matrix1(rows, cols);
   matrix1.SumMatrix(matrix2);
   ASSERT_TRUE(matrix1 == matrix2);
 }
@@ -188,19 +187,19 @@ TEST(Functions, SubMatrix) {
   const int cols = rand() % 10 + 1;
   double **newMatrix = nullptr;
   TestCase::genMatrix(&newMatrix, rows, cols);
-  S21Matrix matrix1;
+  S21::Matrix matrix1;
   matrix1.SetMatrix(newMatrix, rows, cols);
   TestCase::deleteMatrix(&newMatrix, rows);
-  S21Matrix matrix2(matrix1);
+  S21::Matrix matrix2(matrix1);
   matrix1.SubMatrix(matrix2);
-  S21Matrix matrix0(rows, cols);
+  S21::Matrix matrix0(rows, cols);
   ASSERT_TRUE(matrix1 == matrix0);
 }
 
 TEST(Functions, MulNumber) {
-  S21Matrix matrix1;
-  TestCase::genS21Matrix(matrix1);
-  S21Matrix matrix2(matrix1);
+  S21::Matrix matrix1;
+  TestCase::genMatrix(matrix1);
+  S21::Matrix matrix2(matrix1);
   const double mul = 2.0;
   matrix1.MulNumber(mul);
   srand(time(nullptr));
@@ -213,11 +212,11 @@ TEST(Functions, MulMatrix) {
   srand(time(nullptr) + rand());
   const int rows = rand() % 10 + 1;
   const int cols = rand() % 10 + 1;
-  S21Matrix matrix1(rows, cols);
-  S21Matrix matrix2(cols, rows);
-  TestCase::fillS21Matrix(matrix1);
-  S21Matrix matrix1Copy(matrix1);
-  TestCase::fillS21Matrix(matrix2);
+  S21::Matrix matrix1(rows, cols);
+  S21::Matrix matrix2(cols, rows);
+  TestCase::fillMatrix(matrix1);
+  S21::Matrix matrix1Copy(matrix1);
+  TestCase::fillMatrix(matrix2);
   matrix1.MulMatrix(matrix2);
   auto mulMat = [&]() -> bool {
     for (int m = 0; m < matrix1Copy.GetRows(); ++m) {
@@ -239,14 +238,14 @@ TEST(Functions, MulMatrix) {
 }
 
 TEST(Functions, Transpose) {
-  S21Matrix matrix1(3, 4);
-  S21Matrix matrix2 = matrix1.Transpose();
+  S21::Matrix matrix1(3, 4);
+  S21::Matrix matrix2 = matrix1.Transpose();
   ASSERT_TRUE(matrix1.GetRows() == matrix2.GetCols() &&
               matrix1.GetCols() == matrix2.GetRows());
 }
 
 TEST(Functions, Determinant) {
-  S21Matrix matrix(4, 4);
+  S21::Matrix matrix(4, 4);
   matrix(0, 0) = 1;
   matrix(0, 1) = 12;
   matrix(0, 2) = 12;
@@ -267,7 +266,7 @@ TEST(Functions, Determinant) {
 }
 
 TEST(Functions, CalcComplements) {
-  S21Matrix matrix1(4, 4);
+  S21::Matrix matrix1(4, 4);
   matrix1(0, 0) = 1;
   matrix1(0, 1) = 12;
   matrix1(0, 2) = 12;
@@ -285,7 +284,7 @@ TEST(Functions, CalcComplements) {
   matrix1(3, 2) = 21;
   matrix1(3, 3) = 7;
 
-  S21Matrix matrix2(4, 4);
+  S21::Matrix matrix2(4, 4);
   matrix2(0, 0) = -10992;
   matrix2(0, 1) = -5408;
   matrix2(0, 2) = 7224;
@@ -306,7 +305,7 @@ TEST(Functions, CalcComplements) {
 }
 
 TEST(Functions, Inverse) {
-  S21Matrix matrix1(4, 4);
+  S21::Matrix matrix1(4, 4);
   matrix1(0, 0) = 1;
   matrix1(0, 1) = 12;
   matrix1(0, 2) = 12;
@@ -324,7 +323,7 @@ TEST(Functions, Inverse) {
   matrix1(3, 2) = 21;
   matrix1(3, 3) = 7;
 
-  S21Matrix matrix2(4, 4);
+  S21::Matrix matrix2(4, 4);
   matrix2(0, 0) = 0.407111111;
   matrix2(0, 1) = -0.368111111;
   matrix2(0, 2) = 0.053444444;
@@ -345,22 +344,22 @@ TEST(Functions, Inverse) {
 }
 
 TEST(Operators, Equal) {
-  S21Matrix matrix1;
-  TestCase::genS21Matrix(matrix1);
-  S21Matrix matrix2(matrix1);
+  S21::Matrix matrix1;
+  TestCase::genMatrix(matrix1);
+  S21::Matrix matrix2(matrix1);
   ASSERT_TRUE(matrix1.EqMatrix(matrix2) == (matrix1 == matrix2));
 }
 
 TEST(Operators, Assignment) {
-  S21Matrix matrix1;
-  TestCase::genS21Matrix(matrix1);
-  S21Matrix matrix2 = matrix1;
+  S21::Matrix matrix1;
+  TestCase::genMatrix(matrix1);
+  S21::Matrix matrix2 = matrix1;
   ASSERT_TRUE(matrix1 == matrix2);
 }
 
 TEST(Operators, ReturnElement) {
-  S21Matrix matrix(3, 4);
-  TestCase::fillS21Matrix(matrix);
+  S21::Matrix matrix(3, 4);
+  TestCase::fillMatrix(matrix);
   srand(time(nullptr));
   int i = rand() % 3;
   int k = rand() % 4;
@@ -368,89 +367,88 @@ TEST(Operators, ReturnElement) {
 }
 
 TEST(Operators, SumMatrix) {
-  S21Matrix matrix1(3, 4);
-  S21Matrix matrix2(3, 4);
-  TestCase::fillS21Matrix(matrix1);
-  TestCase::fillS21Matrix(matrix2);
-  S21Matrix matrix3(matrix1);
+  S21::Matrix matrix1(3, 4);
+  S21::Matrix matrix2(3, 4);
+  TestCase::fillMatrix(matrix1);
+  TestCase::fillMatrix(matrix2);
+  S21::Matrix matrix3(matrix1);
   matrix3.SumMatrix(matrix2);
   ASSERT_TRUE(matrix3 == (matrix1 + matrix2));
 }
 
 TEST(Operators, SumMatrixIncrement) {
-  S21Matrix matrix1(3, 4);
-  S21Matrix matrix2(3, 4);
-  TestCase::fillS21Matrix(matrix1);
-  TestCase::fillS21Matrix(matrix2);
-  S21Matrix matrix3(matrix1);
+  S21::Matrix matrix1(3, 4);
+  S21::Matrix matrix2(3, 4);
+  TestCase::fillMatrix(matrix1);
+  TestCase::fillMatrix(matrix2);
+  S21::Matrix matrix3(matrix1);
   matrix3.SumMatrix(matrix2);
   ASSERT_TRUE(matrix3 == (matrix1 += matrix2));
 }
 
 TEST(Operators, SubMatrix) {
-  S21Matrix matrix1(3, 4);
-  S21Matrix matrix2(3, 4);
-  TestCase::fillS21Matrix(matrix1);
-  TestCase::fillS21Matrix(matrix2);
-  S21Matrix matrix3(matrix1);
+  S21::Matrix matrix1(3, 4);
+  S21::Matrix matrix2(3, 4);
+  TestCase::fillMatrix(matrix1);
+  TestCase::fillMatrix(matrix2);
+  S21::Matrix matrix3(matrix1);
   matrix3.SubMatrix(matrix2);
   ASSERT_TRUE(matrix3 == (matrix1 - matrix2));
-} 
+}
 
 TEST(Operators, SubMatrixDecrement) {
-  S21Matrix matrix1(3, 4);
-  S21Matrix matrix2(3, 4);
-  TestCase::fillS21Matrix(matrix1);
-  TestCase::fillS21Matrix(matrix2);
-  S21Matrix matrix3(matrix1);
+  S21::Matrix matrix1(3, 4);
+  S21::Matrix matrix2(3, 4);
+  TestCase::fillMatrix(matrix1);
+  TestCase::fillMatrix(matrix2);
+  S21::Matrix matrix3(matrix1);
   matrix3.SubMatrix(matrix2);
   ASSERT_TRUE(matrix3 == (matrix1 -= matrix2));
 }
 
 TEST(Operators, MulToNums) {
-  S21Matrix matrix1;
-  TestCase::genS21Matrix(matrix1);
-  S21Matrix matrix2(matrix1);
+  S21::Matrix matrix1;
+  TestCase::genMatrix(matrix1);
+  S21::Matrix matrix2(matrix1);
   matrix1.MulNumber(2);
   ASSERT_TRUE(matrix1 == (matrix2 * 2));
 }
 
 TEST(Operators, MulNumsTo) {
-  S21Matrix matrix1;
-  TestCase::genS21Matrix(matrix1);
-  S21Matrix matrix2(matrix1);
+  S21::Matrix matrix1;
+  TestCase::genMatrix(matrix1);
+  S21::Matrix matrix2(matrix1);
   matrix1.MulNumber(2);
   ASSERT_TRUE(matrix1 == (2 * matrix2));
 }
 
 TEST(Operators, MulNumsIncrement) {
-  S21Matrix matrix1;
-  TestCase::genS21Matrix(matrix1);
-  S21Matrix matrix2(matrix1);
+  S21::Matrix matrix1;
+  TestCase::genMatrix(matrix1);
+  S21::Matrix matrix2(matrix1);
   matrix1.MulNumber(2);
   ASSERT_TRUE(matrix1 == (matrix2 *= 2));
 }
 
 TEST(Operators, MulMatrix) {
-  S21Matrix matrix1(3, 4);
-  S21Matrix matrix2(3, 4);
-  TestCase::fillS21Matrix(matrix1);
-  TestCase::fillS21Matrix(matrix2);
-  S21Matrix matrix3(matrix1);
+  S21::Matrix matrix1(3, 4);
+  S21::Matrix matrix2(3, 4);
+  TestCase::fillMatrix(matrix1);
+  TestCase::fillMatrix(matrix2);
+  S21::Matrix matrix3(matrix1);
   matrix3.MulMatrix(matrix2);
   ASSERT_TRUE(matrix3 == (matrix1 * matrix2));
 }
 
 TEST(Operators, MulMatrixIncrement) {
-  S21Matrix matrix1(3, 4);
-  S21Matrix matrix2(3, 4);
-  TestCase::fillS21Matrix(matrix1);
-  TestCase::fillS21Matrix(matrix2);
-  S21Matrix matrix3(matrix1);
+  S21::Matrix matrix1(3, 4);
+  S21::Matrix matrix2(3, 4);
+  TestCase::fillMatrix(matrix1);
+  TestCase::fillMatrix(matrix2);
+  S21::Matrix matrix3(matrix1);
   matrix3.MulMatrix(matrix2);
   ASSERT_TRUE(matrix3 == (matrix1 *= matrix2));
 }
-}  // namespace S21
 
 int main(int argc, char **argv) {
   testing::InitGoogleTest(&argc, argv);

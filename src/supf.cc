@@ -2,7 +2,7 @@
 
 // Support functions
 namespace S21 {
-void S21Matrix::InitializeMatrix() {
+void Matrix::InitializeMatrix() {
   if (rows_ <= 0 && cols_ <= 0) {
     throw std::invalid_argument("matrix_ parameters less or equal to zero");
   }
@@ -15,7 +15,7 @@ void S21Matrix::InitializeMatrix() {
   }
 }
 
-void S21Matrix::DeleteMatrix() {
+void Matrix::DeleteMatrix() {
   if (matrix_) {
     for (int i = 0; i < rows_; ++i) {
       delete[] matrix_[i];
@@ -27,14 +27,14 @@ void S21Matrix::DeleteMatrix() {
   }
 }
 
-bool S21Matrix::SizeCompare(const S21Matrix &other) const {
+bool Matrix::SizeCompare(const Matrix &other) const {
   if (rows_ != other.rows_ || cols_ != other.cols_) {
     return false;
   }
   return true;
 }
 
-void S21Matrix::PlusMinus(const S21Matrix &other, const int &sign) {
+void Matrix::PlusMinus(const Matrix &other, const int &sign) {
   if (SizeCompare(other) == false) {
     throw std::out_of_range("Matrix parameters are not equal to each other");
   }
@@ -45,8 +45,8 @@ void S21Matrix::PlusMinus(const S21Matrix &other, const int &sign) {
   }
 }
 
-void S21Matrix::CutMatrix(S21Matrix &A, const int &rows_del,
-                          const int &columns_del, S21Matrix &R) {
+void Matrix::CutMatrix(Matrix &A, const int &rows_del, const int &columns_del,
+                       Matrix &R) {
   for (int i = 0, j = 0; i < A.rows_; ++i) {
     if (i == rows_del) {
       continue;
@@ -62,7 +62,7 @@ void S21Matrix::CutMatrix(S21Matrix &A, const int &rows_del,
   }
 }
 
-void S21Matrix::CopyMatrix(const S21Matrix &A) {
+void Matrix::CopyMatrix(const Matrix &A) {
   if (!EqMatrix(A)) {
     DeleteMatrix();
     rows_ = A.rows_;
