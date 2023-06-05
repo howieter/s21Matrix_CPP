@@ -2,11 +2,6 @@
 
 Implementation of the s21_matrix_oop.h library.
 
-## Contents
-1. [Description](#description)
-2. [Build](#build)
-3. [Credits](#credits)
-
 ## Description
 In this project I implemented the matrix library that I have done in **s21_matrix** project in C language, but using the object-oriented approach.
 
